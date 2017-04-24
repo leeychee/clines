@@ -94,8 +94,8 @@ func parse(linestr []string) []line {
 
 func draw(fn string, lines []line) {
 	dc := gg.NewContext(int(2*r50), int(2*r50))
-	if _, err := os.Open(fontpath); err == nil {
-		dc.LoadFontFace(fontpath, fontsize)
+	if err := dc.LoadFontFace(fontpath, fontsize); err != nil {
+		log.Printf("Fail to load font: %s", err)
 	}
 	// Draw white backgroud
 	dc.DrawRectangle(0, 0, 2*r50, 2*r50)
@@ -113,5 +113,7 @@ func draw(fn string, lines []line) {
 		//dc.SetLineWidth(5)
 		dc.Stroke()
 	}
-	dc.SavePNG(fn + ".png")
+	if err := dc.SavePNG(fn + ".png"); err != nil {
+		log.Printf("Fail to save PNG: %s", err)
+	}
 }
